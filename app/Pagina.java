@@ -2,35 +2,39 @@
 public class Pagina {
 	private int numPagina;
 	private boolean loaded;
-	private boolean dirt;
+	private boolean M;
+	private boolean R;
 	private boolean referenced;
 
 	public Pagina(int numPagina) {
 		this.numPagina = numPagina;
-		this.referenced = true;
+		this.referenced = false;
+		this.M = false;
+		this.R = false;
 		this.loaded = false;
 	}
 
 	public int getNumPagina() {
 		return this.numPagina;
 	}
+	public boolean getM() {
+		return this.M;
+	}
 
-	/*
-	public void setDirty(){
-		dirty = true;	
+	public boolean getR() {
+		return this.R;
 	}
-	
-	public boolean isDirty(){
-		return dirty;
-	}
-	*/
 
 	public boolean isLoaded() {
 		return this.loaded;
 	}
 
-	public synchronized boolean reference() {
-		return referenced;
+	public boolean isReferenced(){
+		return this.referenced;
+	}
+
+	public synchronized void reference() {
+		this.R = true;
 	}
 
 
@@ -38,7 +42,21 @@ public class Pagina {
 		this.loaded = true;
 	}
 
+	public synchronized void resetR() {
+		this.R = false;
+	}
+
+	public synchronized void resetM() {
+		this.M = false;
+	}
+
 	public synchronized void unload() {
 		this.loaded = false;
+		resetR();
+	}
+
+	public synchronized void reset() {
+		this.R = false;
+		this.M = false;
 	}
 }

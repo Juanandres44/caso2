@@ -49,7 +49,7 @@ public class ActualizadorTabla extends Thread {
 			App.cargarPagina();
 		} else if (page.isLoaded() == false) {
 			App.falloGenerado();
-			new AlgoritmoActualizacion(tabla, numPagina).start();
+			new AgingThreadF(tabla, numPagina).start();
 		}
 		tabla.replace(numPagina, page);
 	}
