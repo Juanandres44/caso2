@@ -4,13 +4,13 @@ import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CyclicBarrier;
 
-public class ActualizadorTabla extends Thread {
+public class ActualizadorTablaThread extends Thread {
 	private ArrayList<String> referencias;
 	private ConcurrentHashMap<Integer, Pagina> tabla;
 	private int cantidadReferencias;
 	private CyclicBarrier barrera;
 
-	public ActualizadorTabla(ArrayList<String> referencias, ConcurrentHashMap<Integer, Pagina> tabla,
+	public ActualizadorTablaThread(ArrayList<String> referencias, ConcurrentHashMap<Integer, Pagina> tabla,
 			int cantidadReferencias, CyclicBarrier barrera) {
 		this.referencias = referencias;
 		this.tabla = tabla;
@@ -22,9 +22,9 @@ public class ActualizadorTabla extends Thread {
 	public void run() {
 		for (int i = 0; i < cantidadReferencias; i++) {
 			String[] referencia = referencias.get(i).split(",");
-			String matriz = referencia[0];
+			String matriz = referencia[0]; //no es necesario para la simulación, se incluye por claridad
 			Integer numPagina = Integer.parseInt(referencia[1]);
-			Integer desplazamiento = Integer.parseInt(referencia[2]);
+			Integer desplazamiento = Integer.parseInt(referencia[2]); //no es necesario para la simulación, se incluye por claridad
 			try {
 				actualizarTabla(numPagina);
                 Thread.sleep(2);
@@ -49,7 +49,7 @@ public class ActualizadorTabla extends Thread {
 			App.cargarPagina();
 		} else if (page.isLoaded() == false) {
 			App.falloGenerado();
-			new AgingThreadF(tabla, numPagina).start();
+			new AlgThread(tabla, numPagina).start();
 		}
 		tabla.replace(numPagina, page);
 	}

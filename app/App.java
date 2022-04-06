@@ -1,5 +1,3 @@
-
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -31,23 +29,22 @@ public class App {
 
 
 
-	public static int  PositionResult(int pathtype ,int pagesize , int rowquantity , int columnquantity , int intsize, FileWriter monda,String currentmat,int checker2) {
+	public static int  PositionResult(int pathtype ,int pagesize , int rowquantity , int columnquantity , int intsize, FileWriter newFile,String currentmat,int checker2) {
 		int refnumber=3*(rowquantity*columnquantity);
 		int pagenumber=rowquantity*columnquantity*3*intsize / pagesize;
 		int conteo =0;
 		int PA=checker2;
 		if (PA==0) {
 		try {
-			monda.write(Integer.toString(pagesize)+"\r\n");
-			monda.write(Integer.toString(intsize)+"\r\n");
-			monda.write(Integer.toString(rowquantity)+"\r\n");
-			monda.write(Integer.toString(columnquantity)+"\r\n");
-			monda.write(Integer.toString(pathtype)+"\r\n");
-			monda.write(Integer.toString(pagenumber)+"\r\n");
-			monda.write(Integer.toString(refnumber)+"\r\n");
+			newFile.write(Integer.toString(pagesize)+"\r\n");
+			newFile.write(Integer.toString(intsize)+"\r\n");
+			newFile.write(Integer.toString(rowquantity)+"\r\n");
+			newFile.write(Integer.toString(columnquantity)+"\r\n");
+			newFile.write(Integer.toString(pathtype)+"\r\n");
+			newFile.write(Integer.toString(pagenumber)+"\r\n");
+			newFile.write(Integer.toString(refnumber)+"\r\n");
 
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		}
@@ -71,11 +68,10 @@ public class App {
 					}
 					
 					try {
-						monda.write(currentAnotation);
+						newFile.write(currentAnotation);
 						System.out.println(currentAnotation);
-						System.out.println("reposao se esta escribiendo,vamos por la posicion"+i+"y la columna"+j);
+						System.out.println("Vamos por la posicion"+i+"y la columna"+j);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					
@@ -103,11 +99,10 @@ public class App {
 					}
 					
 					try {
-						monda.write(currentAnotation);
+						newFile.write(currentAnotation);
 						System.out.println(currentAnotation);
-						System.out.println("reposao se esta escribiendo,vamos por la posicion"+i+"y la columna"+j);
+						System.out.println("Vamos por la posicion"+i+"y la columna"+j);
 					} catch (IOException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 					
@@ -121,15 +116,14 @@ public class App {
 
 	public static void cargarDatos() {
 		Scanner scanner = new Scanner (System.in);
-		System.out.print("Numero de marcos de pagina para la simulacion: ");  
+		System.out.print("Numero de marcos de pagina que se van a utilizar para la simulacion: ");  
 		numMarcosDePaginaRAM = scanner.nextInt(); 
 		Scanner sc = new Scanner(System.in);
 		while (!carga) {
-			// Carga de datos del archivo Properties
 			try {
 				if (pathToProperties == "") {
 					System.out.print(
-							"Change input file path or just press enter for using the default path 'referencia/referencia1.txt' \n");
+							"Cambie el path del archivo de referencias o simplemente presione enter para utilizar el archivo default 'referencia/referencia1.txt' \n");
 					pathToProperties = sc.nextLine();
 					if (pathToProperties == "") {
 						pathToProperties = "referencia/referencia1.txt";
@@ -173,46 +167,44 @@ public class App {
 				file = new File("referencia/referencia1.txt");
 				boolean value = file.createNewFile();
 				if (value) {
-				  System.out.println("New Java File is created.");
+				  System.out.println("Archivo creado");
 				}
 				else {
-				  System.out.println("The file already exists.");
+				  System.out.println("Ya existe este archivo");
 				}
 			  }
 			  catch(Exception e) {
 				e.getStackTrace();
 			  }
-			  FileWriter monda=null;
+			  FileWriter newFile=null;
 			  int actua =0;
 			  int actua2=0;
 			  int actua3=0;
 			  try {
-				  monda = new FileWriter("referencia/referencia1.txt");
+				  newFile = new FileWriter("referencia/referencia1.txt");
 				  for(int y=0;y<3;y++) {
 				  if(y==0) {
-					  actua=PositionResult(1,8,4,4,2,monda,"A",0);
+					  actua=PositionResult(1,8,4,4,2,newFile,"A",0);
 					  System.out.println("pag actual matriza final"+actua);
 				  }
 				  if(y==1) {
-					  actua2=PositionResult(1,8,4,4,2,monda,"B",actua);
+					  actua2=PositionResult(1,8,4,4,2,newFile,"B",actua);
 					  System.out.println("pag actual matrizb final"+actua2);
 	  
 				  }
 				  if(y==2) {
-					  actua3=PositionResult(1,8,4,4,2,monda,"C",actua2);
+					  actua3=PositionResult(1,8,4,4,2,newFile,"C",actua2);
 					  System.out.println("pag actual matrizc final"+actua3);
 				  }			
 				  }
 	  
 			  } catch (IOException e) {
-				  // TODO Auto-generated catch block
 				  e.printStackTrace();
 			  }
 	  
 			  try {
-				  monda.close();
+				  newFile.close();
 			  } catch (IOException e) {
-				  // TODO Auto-generated catch block
 				  e.printStackTrace();
 			  }		
 		}
@@ -227,7 +219,7 @@ public class App {
 			
 			CyclicBarrier barrera = new CyclicBarrier(2);
 			
-			new ActualizadorTabla(secuenciaReferencias, tabla, numReferencias, barrera).start();			
+			new ActualizadorTablaThread(secuenciaReferencias, tabla, numReferencias, barrera).start();			
 			try {
 				barrera.await();
 			} catch (InterruptedException | BrokenBarrierException e) {
